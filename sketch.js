@@ -1,7 +1,7 @@
-import { Board } from './model/board/board.js'
 import { Config, Timer } from './config/config.js';
 import { Context } from './config/context.js';
 import { Human } from './model/player/human.js';
+import { BoardFactory } from './model/board/boardFactory.js';
 
 function main() {
     let canvas = document.getElementById("schachCanvas");
@@ -13,26 +13,33 @@ function main() {
 
 class Game {
     constructor() {
-        this.board = new Board();
+        this.board = new BoardFactory();
         var self = this;
-        this.player = new Human();
-        this.moving = false;
+        this.players = [
+            new Human(Config.COLOURS.WHITE, 0),
+            new Human(Config.COLOURS.BLACK, 1)
+        ];
+        this.currentId = 0;
+        Context.currentHumanPlayer = this.players[this.currentId];
+        Context.currentHumanPlayer.moving = true;
         setInterval(function() {self.update(self)}, 1000 / Config.ANIMATION.fps);
         Context.canvas.addEventListener("click", this.onClick, false);
     }
 
     turnLoop() {
-        if (!this.moving) {
-            this.move = this.player.getNextMove().then((result) => {
-                console.log(result);
-                this.moving = false;
+        if (!Context.currentHumanPlayer.aware) {
+            Context.currentHumanPlayer.getNextMove().then((result) => {
+                Context.currentHumanPlayer.aware = false;
+                this.currentId = (this.currentId + 1) % 2;
+                Context.currentHumanPlayer = this.players[this.currentId];
             });
-            this.moving = true;
+            Context.currentHumanPlayer.aware = true;
         }
     }
 
     onClick(e) {
-        Context.game.board.onClick(e.offsetX, e.offsetY);
+        const pos = Context.game.board.onClick(e.offsetX, e.offsetY);
+        Context.currentHumanPlayer.addClickPosition(pos);
     }
 
     update(self) {

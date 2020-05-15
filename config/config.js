@@ -8,7 +8,8 @@ export class Config {
         background: 'rgb(247, 220, 111)',
         white: 'rgb(237, 230, 221)',
         black: 'rgb(78, 135, 110)',
-        select: 'rgb(178, 135, 180)'
+        select: 'rgb(118, 135, 180)',
+        potential: 'rgb(178, 235, 180)',
     };
     static PIECE = {
         X_SIZE: 30,
@@ -21,7 +22,8 @@ export class Config {
     static COLOURS = {
        BLACK: 0,
        WHITE: 1,
-       SELECT: 2
+       SELECT: 2,
+       POTENTIAL: 3,
     };
     static CHESS_COLOURS = {
        BLACK: 0,
@@ -30,7 +32,8 @@ export class Config {
     static COLOUR_NAMES = [
         'black', 
         'white',
-        'select'
+        'select',
+        'potential'
     ];
 }
 
