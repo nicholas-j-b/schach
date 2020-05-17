@@ -1,6 +1,5 @@
 import { Config } from "../../config/config.js";
 import { Context } from "../../config/context.js";
-import { Piece } from "../piece/piece.js";
 
 export class Square {
     constructor(x, y, xSize, ySize, colour) {
